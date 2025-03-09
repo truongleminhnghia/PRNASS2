@@ -18,29 +18,18 @@ namespace DataAccessLayer.Repositories
             _context = context;
         }
 
-        public async Task<List<NewsArticle>> GetAllAsync(int? categoryId, List<int>? tagIds)
+        public async Task<List<NewsArticle>> GetAllAsync()
         {
             try
             {
-                var query = _context.NewsArticles
+                return await _context.NewsArticles
+                    .Where(a => a.NewsStatus == "true")
                     .Include(a => a.Category)
                     .Include(a => a.CreatedBy)
                     .Include(a => a.UpdatedBy)
                     .Include(a => a.NewsTags)
                         .ThenInclude(nt => nt.Tag)
-                    .AsQueryable();
-
-                if (categoryId.HasValue)
-                {
-                    query = query.Where(a => a.CategoryID == categoryId);
-                }
-
-                if (tagIds != null && tagIds.Any())
-                {
-                    query = query.Where(a => a.NewsTags.Any(nt => tagIds.Contains(nt.TagID)));
-                }
-
-                return await query.ToListAsync();
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -54,6 +43,7 @@ namespace DataAccessLayer.Repositories
             try
             {
                 return await _context.NewsArticles
+                    .Where(a => a.NewsStatus == "true")
                     .Include(a => a.Category)
                     .Include(a => a.CreatedBy)
                     .Include(a => a.UpdatedBy)
@@ -158,7 +148,7 @@ namespace DataAccessLayer.Repositories
                 var article = await _context.NewsArticles.FindAsync(id);
                 if (article == null) return false;
 
-                _context.NewsArticles.Remove(article);
+                article.NewsStatus = "false"; 
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -166,6 +156,22 @@ namespace DataAccessLayer.Repositories
             {
                 Console.WriteLine($"Lỗi khi xóa bài viết {id}: {ex.Message}");
                 return false;
+            }
+        }
+
+        public async Task<List<NewsArticle>> GetNewsHistoryAsync(int staffId)
+        {
+            try
+            {
+                return await _context.NewsArticles
+                    .Where(a => a.CreatedByID == staffId) 
+                    .OrderByDescending(a => a.CreatedDate) 
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy lịch sử bài viết của nhân viên {staffId}: {ex.Message}");
+                return new List<NewsArticle>();
             }
         }
     }

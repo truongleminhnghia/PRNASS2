@@ -20,9 +20,9 @@ namespace BusinessLayer.Services
             _newsArticleRepository = newsArticleRepository;
         }
 
-        public async Task<List<NewsArticle>> GetAllAsync(int? categoryId, List<int>? tagIds)
+        public async Task<List<NewsArticle>> GetAllAsync()
         {
-            return await _newsArticleRepository.GetAllAsync(categoryId, tagIds);
+            return await _newsArticleRepository.GetAllAsync();
         }
 
         public async Task<NewsArticle?> GetByIdAsync(int id)
@@ -44,6 +44,9 @@ namespace BusinessLayer.Services
         {
             return await _newsArticleRepository.DeleteAsync(id);
         }
-
+        public async Task<List<NewsArticle>> GetNewsHistoryAsync(int staffId)
+        {
+            return await _newsArticleRepository.GetNewsHistoryAsync(staffId);
+        }
     }
 }

@@ -11,10 +11,11 @@ namespace BusinessLayer.Services
 {
     public interface INewsArticleService
     {
-        Task<List<NewsArticle>> GetAllAsync(int? categoryId, List<int>? tagIds);
+        Task<List<NewsArticle>> GetAllAsync();
         Task<NewsArticle?> GetByIdAsync(int id);
         Task<NewsArticle> CreateAsync(NewsArticle article, List<int> tagIds);
         Task<NewsArticle> UpdateAsync(int id, NewsArticle article, List<int> tagIds);
         Task<bool> DeleteAsync(int id);
+        Task<List<NewsArticle>> GetNewsHistoryAsync(int staffId);
     }
 }
