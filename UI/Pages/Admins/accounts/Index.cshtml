@@ -1,0 +1,83 @@
+﻿@page
+@model UI.Pages.Admins.accounts.IndexModel
+@{
+	Layout = "_LayoutAdmin";
+}
+
+<div>
+	<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAccountModal">Create new</a>
+</div>
+
+<div>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model.Accounts)
+            {
+                <tr>
+                    <td>@account.AccountName</td>
+                    <td>@account.AccountEmail</td>
+                    <td>@account.AccountStatus</td>
+                    <td>@account.AccountRole</td>
+                    <td>
+                        <a asp-page="ViewDetail" asp-route-id="@account.AccountID" class="btn btn-info btn-sm">View Detail</a>
+                        <a asp-page="Edit" asp-route-id="@account.AccountID" class="btn btn-warning btn-sm">Edit</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@account.AccountID" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAccountModalLabel">Create Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="Create">
+                    <div class="mb-3">
+                        <label class="form-label">AccountName</label>
+                        <input asp-for="Account.AccountName" type="text" class="form-control" />
+                        <span asp-validation-for="Account.AccountName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Account.AccountEmail" type="email" class="form-control" />
+                        <span asp-validation-for="Account.AccountEmail" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input asp-for="Account.AccountPassword" type="password" class="form-control" />
+                        <span asp-validation-for="Account.AccountPassword" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <input asp-for="Account.AccountStatus" type="text" class="form-control" />
+                        <span asp-validation-for="Account.AccountStatus" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <input asp-for="Account.AccountRole" type="text" class="form-control" />
+                        <span asp-validation-for="Account.AccountRole" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
