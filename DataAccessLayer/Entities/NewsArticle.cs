@@ -32,5 +32,6 @@ namespace DataAccessLayer.Entities
         public int? UpdatedByID { get; set; }
         [ForeignKey("UpdatedByID")]
         public SystemAccount? UpdatedBy { get; set; }
+        public ICollection<NewsTag>? NewsTags { get; set; }
     }
 }
