@@ -39,7 +39,7 @@ builder.Services.AddScoped<INewsArticleRepository, NewsArticleRepository>();
 builder.Services.AddScoped<INewsArticleService, NewsArticleService>();
 
 builder.Services.AddScoped<INewsTagRepository, NewsTagRepository>();
-builder.Services.AddScoped<INewsTagService, NewsTagService>();
+builder.Services.AddScoped<INewTagService, NewsTagService>();
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagService, TagService>();

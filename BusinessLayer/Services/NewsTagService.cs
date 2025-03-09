@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    public class NewsTagService : INewsTagService
+    public class NewsTagService : INewTagService
     {
         private readonly INewsTagRepository _newsTagRepository;
         private readonly IMapper _mapper;
