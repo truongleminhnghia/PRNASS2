@@ -15,6 +15,8 @@ namespace BusinessLayer.Services
         public Task<IEnumerable<SystemAccountResponse>> GetAll();
         public Task<bool> DeleteAccount(int id);
         public Task<bool> Update(int id, SystemAccountRequest request);
+        public Task<string?> ResetPassword(int id);
+            
 
     }
 }

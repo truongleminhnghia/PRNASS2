@@ -15,5 +15,7 @@ namespace DataAccessLayer.Repositories
         public Task<bool> Update(int id, SystemAccount account);
         public Task<bool> UpdateStatus(int id);
         public Task<bool> CheckEmail(string email);
+        public Task<string?> ResetPassword(int id);
     }
+        
 }

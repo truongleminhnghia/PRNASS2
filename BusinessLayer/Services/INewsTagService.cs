@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    public interface INewTagService
+    public interface INewsTagService
     {
     }
 }

@@ -97,5 +97,15 @@ namespace BusinessLayer.Services
             await _systemAccountRepository.Update(id, account);
             return true;
         }
+
+        public async Task<string?> ResetPassword(int id)
+        {
+            var newPassword = await _systemAccountRepository.ResetPassword(id);
+            if (newPassword == null)
+            {
+                throw new Exception("Account not found");
+            }
+            return newPassword;
+        }
     }
 }

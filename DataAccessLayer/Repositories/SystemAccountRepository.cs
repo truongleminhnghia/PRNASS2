@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,6 +62,37 @@ namespace DataAccessLayer.Repositories
         public async Task<bool> CheckEmail(string email)
         {
             return await _context.SystemAccounts.AnyAsync(s => s.AccountEmail == email);
+        }
+
+        public async Task<string?> ResetPassword(int id)
+        {
+            var account = await _context.SystemAccounts.FirstOrDefaultAsync(a => a.AccountID == id);
+            if (account == null)
+            {
+                return null;
+            }
+
+            string newPassword = GenerateRandomPassword();
+            account.AccountPassword = newPassword;
+            await _context.SaveChangesAsync();
+
+            return newPassword;
+        }
+
+        private string GenerateRandomPassword(int length = 12)
+        {
+            const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
+            StringBuilder result = new StringBuilder();
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                byte[] buffer = new byte[length];
+                rng.GetBytes(buffer);
+                for (int i = 0; i < length; i++)
+                {
+                    result.Append(validChars[buffer[i] % validChars.Length]);
+                }
+            }
+            return result.ToString();
         }
     }
 }
