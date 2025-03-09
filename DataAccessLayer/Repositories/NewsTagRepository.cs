@@ -40,7 +40,18 @@ namespace DataAccessLayer.Repositories
 
         public async Task<List<Tag>> GetTagsByArticleIdAsync(int articleId)
         {
-            return await _context.NewsTags.Where(nt => nt.NewsArticleID == articleId).Select(nt => nt.Tag).ToListAsync();
+            try
+            {
+                return await _context.NewsTags
+                    .Where(nt => nt.NewsArticleID == articleId)
+                    .Select(nt => nt.Tag)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy danh sách Tags của bài viết {articleId}: {ex.Message}");
+                return new List<Tag>();
+            }
         }
     }
 }
