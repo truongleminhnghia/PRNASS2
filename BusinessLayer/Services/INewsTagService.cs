@@ -7,7 +7,7 @@ using BusinessLayer.Models.Responses;
 
 namespace BusinessLayer.Services
 {
-    public interface INewTagService
+    public interface INewsTagService
     {
         Task<List<NewsTagResponse>> GetTagsByArticleIdAsync(int articleId);
     }
