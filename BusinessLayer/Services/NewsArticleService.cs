@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Models.Responses;
 using DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,17 @@ namespace BusinessLayer.Services
         {
             _newsArticleRepository = newsArticleRepository;
             _mapper = mapper;
+        }
+        public async Task<NewsCountResponse> GetNewsCountsAsync()
+        {
+            var (today, thisMonth, thisYear) = await _newsArticleRepository.GetNewsCountsAsync();
+
+            return new NewsCountResponse
+            {
+                NewsCountToday = today,
+                NewsCountThisMonth = thisMonth,
+                NewsCountThisYear = thisYear
+            };
         }
     }
 }

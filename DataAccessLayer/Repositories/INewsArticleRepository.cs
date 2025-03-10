@@ -8,5 +8,6 @@ namespace DataAccessLayer.Repositories
 {
     public interface INewsArticleRepository
     {
+        public Task<(int Today, int ThisMonth, int ThisYear)> GetNewsCountsAsync();
     }
 }

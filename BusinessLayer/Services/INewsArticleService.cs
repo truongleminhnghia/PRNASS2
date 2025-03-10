@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer.Models.Responses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace BusinessLayer.Services
 {
     public interface INewsArticleService
     {
+        public Task<NewsCountResponse> GetNewsCountsAsync();
     }
 }
