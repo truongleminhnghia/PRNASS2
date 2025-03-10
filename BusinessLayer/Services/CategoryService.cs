@@ -31,5 +31,15 @@ namespace BusinessLayer.Services
             return _mapper.Map<IEnumerable<CategoryResponse>>(category);
 
         }
+
+        public async Task<CategoryResponse> GetCategoryByIdAsync(int id)
+        {
+            var result = await _categoryRepository.GetCategoryByIdAsync(id);
+            if (result != null)
+            {
+                return _mapper.Map<CategoryResponse>(result);
+            }
+            throw new Exception("Account do not exist");
+        }
     }
 }
