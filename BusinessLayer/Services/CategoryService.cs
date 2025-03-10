@@ -48,5 +48,13 @@ namespace BusinessLayer.Services
             var category = _mapper.Map<Category>(categoryRequest);
             await _categoryRepository.AddCategoryAsync(category);
         }
+
+        public async Task UpdateCategoryAsync(CategoryRequest categoryRequest)
+        {
+            var category = _mapper.Map<Category>(categoryRequest);
+            await _categoryRepository.UpdateCategoryAsync(category);
+        }
+
+
     }
 }

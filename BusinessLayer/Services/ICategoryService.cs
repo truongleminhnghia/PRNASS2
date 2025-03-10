@@ -13,6 +13,7 @@ namespace BusinessLayer.Services
     {
         public Task<IEnumerable<CategoryResponse>> GetAllCategoriesAsync();
         public Task<CategoryResponse> GetCategoryByIdAsync(int id);
-        public Task AddCategoryAsync(CategoryRequest category);
+        public Task AddCategoryAsync(CategoryRequest categoryRequest);
+        public Task UpdateCategoryAsync(CategoryRequest categoryRequest);
     }
 }

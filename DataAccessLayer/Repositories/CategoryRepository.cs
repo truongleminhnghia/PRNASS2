@@ -35,5 +35,11 @@ namespace DataAccessLayer.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateCategoryAsync(Category category)
+        {
+            _context.Categories.Update(category);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
