@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Models.Responses;
+﻿using BusinessLayer.Models.Requests;
+using BusinessLayer.Models.Responses;
 using DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace BusinessLayer.Services
     {
         public Task<IEnumerable<CategoryResponse>> GetAllCategoriesAsync();
         public Task<CategoryResponse> GetCategoryByIdAsync(int id);
+        public Task AddCategoryAsync(CategoryRequest category);
     }
 }

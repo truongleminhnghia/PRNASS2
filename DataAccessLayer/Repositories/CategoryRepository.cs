@@ -29,5 +29,11 @@ namespace DataAccessLayer.Repositories
             return await _context.Categories.FirstOrDefaultAsync(s => s.CategoryID == id);
         }
 
+        public async Task AddCategoryAsync(Category category)
+        {
+            await _context.Categories.AddAsync(category);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

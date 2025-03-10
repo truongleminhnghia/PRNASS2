@@ -11,5 +11,6 @@ namespace DataAccessLayer.Repositories
     {
         public Task<IEnumerable<Category>> GetAllCategoriesAsync();
         public Task<Category> GetCategoryByIdAsync(int id);
+        public Task AddCategoryAsync(Category category);
     }
 }

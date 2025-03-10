@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Models.Requests;
 using BusinessLayer.Models.Responses;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
@@ -40,6 +41,12 @@ namespace BusinessLayer.Services
                 return _mapper.Map<CategoryResponse>(result);
             }
             throw new Exception("Account do not exist");
+        }
+
+        public async Task AddCategoryAsync(CategoryRequest categoryRequest)
+        {
+            var category = _mapper.Map<Category>(categoryRequest);
+            await _categoryRepository.AddCategoryAsync(category);
         }
     }
 }
