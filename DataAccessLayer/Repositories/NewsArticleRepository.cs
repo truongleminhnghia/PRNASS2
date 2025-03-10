@@ -32,5 +32,15 @@ namespace DataAccessLayer.Repositories
 
             return (newsCountToday, newsCountThisMonth, newsCountThisYear);
         }
+
+        public async Task<IEnumerable<NewsArticle>> SearchNewsArticlesAsync(string keyword)
+        {
+            return await _context.NewsArticles
+                .Where(article => article.NewsTitle.Contains(keyword) || article.NewsTitle.Contains(keyword))
+                .OrderByDescending(article => article.CreatedDate)
+                .ToListAsync();
+        }
+
+
     }
 }

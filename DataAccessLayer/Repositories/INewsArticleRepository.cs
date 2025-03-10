@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace DataAccessLayer.Repositories
     public interface INewsArticleRepository
     {
         public Task<(int Today, int ThisMonth, int ThisYear)> GetNewsCountsAsync();
+        public Task<IEnumerable<NewsArticle>> SearchNewsArticlesAsync(string keyword);
     }
 }
