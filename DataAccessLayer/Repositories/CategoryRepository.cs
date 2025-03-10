@@ -1,4 +1,6 @@
 ﻿using DataAccessLayer.Data;
+using DataAccessLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,12 @@ namespace DataAccessLayer.Repositories
         public CategoryRepository(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        // Get all categories
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        {
+            return await _context.Categories.ToListAsync();
         }
     }
 }

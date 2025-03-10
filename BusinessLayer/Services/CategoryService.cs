@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusinessLayer.Models.Responses;
+using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,17 @@ namespace BusinessLayer.Services
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<CategoryResponse>> GetAllCategoriesAsync()
+        {
+            var category = await _categoryRepository.GetAllCategoriesAsync();
+            if (category == null)
+            {
+                throw new Exception("List empty!");
+            }
+            return _mapper.Map<IEnumerable<CategoryResponse>>(category);
+
         }
     }
 }
