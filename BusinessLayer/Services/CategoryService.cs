@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
             {
                 return _mapper.Map<CategoryResponse>(result);
             }
-            throw new Exception("Account do not exist");
+            throw new Exception("Category do not exist");
         }
 
         public async Task AddCategoryAsync(CategoryRequest categoryRequest)
@@ -53,6 +53,11 @@ namespace BusinessLayer.Services
         {
             var category = _mapper.Map<Category>(categoryRequest);
             await _categoryRepository.UpdateCategoryAsync(category);
+        }
+
+        public async Task DeleteCategoryAsync(int id)
+        {
+            await _categoryRepository.DeleteCategoryAsync(id);
         }
 
 

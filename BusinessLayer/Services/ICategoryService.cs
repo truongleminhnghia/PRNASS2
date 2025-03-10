@@ -15,5 +15,6 @@ namespace BusinessLayer.Services
         public Task<CategoryResponse> GetCategoryByIdAsync(int id);
         public Task AddCategoryAsync(CategoryRequest categoryRequest);
         public Task UpdateCategoryAsync(CategoryRequest categoryRequest);
+        public Task DeleteCategoryAsync(int id);
     }
 }
