@@ -9,8 +9,10 @@ namespace DataAccessLayer.Repositories
 {
     public interface INewsTagRepository
     {
-        Task AddTagsToArticleAsync(int articleId, List<int> tagIds);
-        Task RemoveTagsFromArticleAsync(int articleId);
-        Task<List<Tag>> GetTagsByArticleIdAsync(int articleId);
+        public Task<NewsTag> Save(NewsTag newsTag);
+        public Task<NewsTag> GetById(int id);
+        public Task<IEnumerable<NewsTag>> GetAll();
+        public Task Delete(int id);
+        public Task Update(NewsTag newsTag);
     }
 }

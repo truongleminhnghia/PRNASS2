@@ -3,47 +3,68 @@ using BusinessLayer.Models.Requests;
 using BusinessLayer.Models.Responses;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
 namespace BusinessLayer.Services
 {
     public class NewsArticleService : INewsArticleService
     {
-        private readonly INewsArticleRepository _newsArticleRepository;
+        private readonly INewsArticleRepository _repository;
+        private readonly ITagRepository _tagRepository;
+        private readonly IMapper _mapper;
 
-        public NewsArticleService(INewsArticleRepository newsArticleRepository)
+        public NewsArticleService(INewsArticleRepository repository, ITagRepository tagRepository, IMapper mapper)
         {
-            _newsArticleRepository = newsArticleRepository;
+            _repository = repository;
+            _tagRepository = tagRepository;
+            _mapper = mapper;
         }
 
-        public async Task<List<NewsArticle>> GetAllAsync(int? categoryId, List<int>? tagIds)
+        public async Task<NewsArticleResponse> SaveNewsArticle(NewsArticleRequest newsArticleRequest)
         {
-            return await _newsArticleRepository.GetAllAsync(categoryId, tagIds);
+            var newsArticle = _mapper.Map<NewsArticle>(newsArticleRequest);
+
+            // Add tags to the news article
+            if (newsArticleRequest.TagIDs != null && newsArticleRequest.TagIDs.Any())
+            {
+                newsArticle.NewsTags = new List<NewsTag>();
+                foreach (var tagId in newsArticleRequest.TagIDs)
+                {
+                    var tag = await _tagRepository.GetById(tagId);
+                    if (tag != null)
+                    {
+                        newsArticle.NewsTags.Add(new NewsTag { TagID = tag.TagID, Tag = tag });
+                    }
+                }
+            }
+
+            var savedNewsArticle = await _repository.SaveNewsArticle(newsArticle);
+            return _mapper.Map<NewsArticleResponse>(savedNewsArticle);
         }
 
-        public async Task<NewsArticle?> GetByIdAsync(int id)
+        public async Task<NewsArticleResponse?> GetById(int id)
         {
-            return await _newsArticleRepository.GetByIdAsync(id);
+            var newsArticle = await _repository.GetById(id);
+            return newsArticle == null ? null : _mapper.Map<NewsArticleResponse>(newsArticle);
         }
 
-        public async Task<NewsArticle> CreateAsync(NewsArticle article, List<int> tagIds)
+        public async Task<IEnumerable<NewsArticleResponse>> GetAll()
         {
-            return await _newsArticleRepository.CreateAsync(article, tagIds);
+            var newsArticles = await _repository.GetAll();
+            return _mapper.Map<IEnumerable<NewsArticleResponse>>(newsArticles);
         }
 
-        public async Task<NewsArticle> UpdateAsync(int id, NewsArticle article, List<int> tagIds)
+        public async Task<bool> Update(int id, NewsArticleRequest newsArticleRequest)
         {
-            return await _newsArticleRepository.UpdateAsync(id, article, tagIds);
+            var newsArticle = _mapper.Map<NewsArticle>(newsArticleRequest);
+            return await _repository.Update(id, newsArticle);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> Delete(int id)
         {
-            return await _newsArticleRepository.DeleteAsync(id);
+            return await _repository.Delete(id);
         }
-
     }
 }

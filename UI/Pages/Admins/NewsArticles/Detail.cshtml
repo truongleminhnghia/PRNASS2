@@ -1,0 +1,31 @@
+@page "{id:int}"
+@model UI.Pages.Admins.NewsArticles.DetailModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<h2>News Article Details</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h3>@Model.NewsArticle.NewsTitle</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Headline:</strong> @Model.NewsArticle.Headline</p>
+        <p><strong>Content:</strong> @Model.NewsArticle.NewsContent</p>
+        <p><strong>Source:</strong> @Model.NewsArticle.NewsSource</p>
+        <p><strong>Status:</strong> @Model.NewsArticle.NewsStatus</p>
+        <p><strong>Category:</strong> @Model.NewsArticle.CategoryID</p>
+        <p><strong>Tags:</strong>
+            @foreach (var tag in Model.NewsArticle.Tags)
+            {
+                <span class="badge bg-secondary">@tag</span>
+            }
+        </p>
+        <p><strong>Created Date:</strong> @Model.NewsArticle.CreatedDate</p>
+        <p><strong>Modified Date:</strong> @Model.NewsArticle.ModifiedDate</p>
+    </div>
+    <div class="card-footer">
+        <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

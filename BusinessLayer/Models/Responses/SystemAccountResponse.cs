@@ -12,6 +12,7 @@ namespace BusinessLayer.Models.Responses
         public string? AccountName { get; set; }
         public string? AccountEmail { get; set; }
         public string? AccountRole { get; set; }
+        public string? AccountPassword { get; set; } 
         public string? AccountStatus { get; set; }
     }
 }

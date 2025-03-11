@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Models.Requests;
 using BusinessLayer.Models.Responses;
+using BusinessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,12 @@ namespace BusinessLayer.Services
 {
     public interface ISystemAccountService
     {
-        public Task<SystemAccountResponse> CreateAccount(SystemAccountRequest request);
-        public Task<SystemAccountResponse> GetById(int id);
-        public Task<IEnumerable<SystemAccountResponse>> GetAll();
-        public Task<bool> DeleteAccount(int id);
-        public Task<bool> Update(int id, SystemAccountRequest request);
-
+        Task<SystemAccountResponse> SaveAccount(SystemAccountRequest accountRequest);
+        Task<SystemAccountResponse?> GetById(int id);
+        Task<IEnumerable<SystemAccountResponse>> GetAll();
+        Task<IEnumerable<SystemAccountResponse>> GetFilteredAccounts(string status, string searchTerm, string role);
+        Task<bool> Update(int id, SystemAccountRequest accountRequest);
+        Task<bool> UpdateStatus(int id);
+        Task<bool> CheckEmail(string email);
     }
 }

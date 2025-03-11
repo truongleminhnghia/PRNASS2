@@ -15,8 +15,8 @@ namespace BusinessLayer.Automappers
         public AccountMapper()
         {
             //chìu từ trái sang phải
-            CreateMap<SystemAccountRequest, SystemAccount>();
-            CreateMap<SystemAccount, SystemAccountResponse>();
+            CreateMap<SystemAccount, SystemAccountRequest>().ReverseMap();
+            CreateMap<SystemAccount, SystemAccountResponse>().ReverseMap();
         }
     }
 }

@@ -20,3 +20,18 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.status-badge {
+  padding: 0.25em 0.5em;
+  border-radius: 0.25rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background-color: #28a745; /* Green */
+}
+
+.status-inactive {
+  background-color: #dc3545; /* Red */
+}

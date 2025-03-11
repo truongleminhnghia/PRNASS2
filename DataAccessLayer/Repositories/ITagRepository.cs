@@ -9,12 +9,9 @@ namespace DataAccessLayer.Repositories
 {
     public interface ITagRepository
     {
-        Task<List<Tag>> GetAllAsync();
-        Task<Tag?> GetByIdAsync(int id);
-        Task<Tag> CreateAsync(Tag tag);
-        Task<Tag> UpdateAsync(int id, Tag tag);
-        Task<List<Tag>> GetByArticleIdAsync(int articleId);
-        //Task<bool> DeleteAsync(int id);
-
+        Task<Tag> SaveTag(Tag tag);
+        Task<Tag?> GetById(int id);
+        Task<Tag?> GetByName(string name);
+        Task<IEnumerable<Tag>> GetAll();
     }
 }

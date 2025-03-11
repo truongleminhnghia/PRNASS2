@@ -26,7 +26,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 builder.Services.AddAutoMapper(
-	typeof(AccountMapper)
+	typeof(AccountMapper),
+	typeof(NewsArticleAutoMapper)
 );
 
 builder.Services.AddScoped<ISystemAccountRepository, SystemAccountRepository>();

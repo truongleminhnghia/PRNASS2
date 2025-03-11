@@ -9,11 +9,11 @@ namespace DataAccessLayer.Repositories
 {
     public interface ISystemAccountRepository
     {
-        public Task<SystemAccount> SaveAccount(SystemAccount account);
-        public Task<SystemAccount?> GetById(int id);
-        public Task<IEnumerable<SystemAccount>> GetAll();
-        public Task<bool> Update(int id, SystemAccount account);
-        public Task<bool> UpdateStatus(int id);
-        public Task<bool> CheckEmail(string email);
+        Task<SystemAccount> SaveAccount(SystemAccount account);
+        Task<SystemAccount?> GetById(int id);
+        Task<IEnumerable<SystemAccount>> GetAll();
+        Task<bool> Update(int id, SystemAccount account);
+        Task<bool> UpdateStatus(int id);
+        Task<bool> CheckEmail(string email);
     }
 }

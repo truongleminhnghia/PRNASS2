@@ -12,11 +12,9 @@ namespace BusinessLayer.Services
 {
     public interface ITagService
     {
-        Task<TagResponse> CreateAsync(TagRequest tagRequest);
-        Task<List<TagResponse>> GetAllAsync();
-        Task<TagResponse?> GetByIdAsync(int id);
-        Task<TagResponse> UpdateAsync(int id, TagRequest tagRequest);
-        Task<List<TagResponse>> GetTagsByArticleIdAsync(int articleId);
-        //Task<bool> DeleteAsync(int id);
+        Task<TagResponse> SaveTag(string tagName);
+        Task<TagResponse?> GetById(int id);
+        Task<TagResponse?> GetByName(string name);
+        Task<IEnumerable<TagResponse>> GetAll();
     }
 }

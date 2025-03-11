@@ -1,27 +1,26 @@
-﻿using BusinessLayer.Models;
 using BusinessLayer.Models.Responses;
 using BusinessLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
-namespace UI.Pages.Admins.accounts
+namespace UI.Pages.Admins.Categories
 {
     public class ViewDetailModel : PageModel
     {
-        private readonly ISystemAccountService _accountService;
+        private readonly ICategoryService _categoryService;
 
-        public ViewDetailModel(ISystemAccountService accountService)
+        public ViewDetailModel(ICategoryService categoryService)
         {
-            _accountService = accountService;
+            _categoryService = categoryService;
         }
 
-        public SystemAccountResponse Account { get; set; }
+        public CategoryResponse Category { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Account = await _accountService.GetById(id);
-            if (Account == null)
+            Category = await _categoryService.GetById(id);
+            if (Category == null)
             {
                 return NotFound();
             }

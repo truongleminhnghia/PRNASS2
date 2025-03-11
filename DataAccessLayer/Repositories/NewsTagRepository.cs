@@ -18,40 +18,37 @@ namespace DataAccessLayer.Repositories
             _context = context;
         }
 
-        public async Task AddTagsToArticleAsync(int articleId, List<int> tagIds)
+        public Task Delete(int id)
         {
-            var newsTags = tagIds.Select(tagId => new NewsTag
-            {
-                NewsArticleID = articleId,
-                TagID = tagId
-            }).ToList();
-
-            await _context.NewsTags.AddRangeAsync(newsTags);
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task RemoveTagsFromArticleAsync(int articleId)
+        public async Task<IEnumerable<NewsTag>> GetAll()
         {
-            var existingTags = await _context.NewsTags.Where(nt => nt.NewsArticleID == articleId).ToListAsync();
-
-            _context.NewsTags.RemoveRange(existingTags);
-            await _context.SaveChangesAsync();
+            return await _context.NewsTags
+            .Include(nt => nt.NewsArticle)
+            .Include(nt => nt.Tag)
+            .ToListAsync();
         }
 
-        public async Task<List<Tag>> GetTagsByArticleIdAsync(int articleId)
+        public async Task<NewsTag> GetById(int newsArticleId)
         {
-            try
-            {
-                return await _context.NewsTags
-                    .Where(nt => nt.NewsArticleID == articleId)
-                    .Select(nt => nt.Tag)
-                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi khi lấy danh sách Tags của bài viết {articleId}: {ex.Message}");
-                return new List<Tag>();
-            }
+            return await _context.NewsTags.Include(nt => nt.NewsArticle)
+                                            .Include(nt => nt.Tag)
+                                            .FirstOrDefaultAsync(c => c.NewsArticleID == newsArticleId);
+        }
+
+        public async Task<NewsTag> Save(NewsTag newsTag)
+        {
+            _context.NewsTags.Add(newsTag);
+            await _context.SaveChangesAsync();
+            return newsTag;
+        }
+
+        public async Task Update(NewsTag newsTag)
+        {
+            _context.Entry(newsTag).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }

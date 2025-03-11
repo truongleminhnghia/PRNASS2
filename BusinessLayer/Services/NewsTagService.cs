@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Models.Responses;
+using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,7 @@ namespace BusinessLayer.Services
             _newsTagRepository = newsTagRepository;
             _mapper = mapper;
         }
-        public async Task<List<NewsTagResponse>> GetTagsByArticleIdAsync(int articleId)
-        {
-            var tags = await _newsTagRepository.GetTagsByArticleIdAsync(articleId);
-            return _mapper.Map<List<NewsTagResponse>>(tags);
-        }
+
+		
     }
 }

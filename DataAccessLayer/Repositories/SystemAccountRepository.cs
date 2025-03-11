@@ -17,28 +17,6 @@ namespace DataAccessLayer.Repositories
         {
             _context = context;
         }
-        public async Task<bool> UpdateStatus(int id)
-        {
-            var account = await _context.SystemAccounts.FirstOrDefaultAsync(a => a.AccountID == id);
-            if (account == null)
-            {
-                return false;
-            }
-            account.AccountStatus = "NO_ACTIVE";
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<IEnumerable<SystemAccount>> GetAll()
-        {
-            return await _context.SystemAccounts.ToListAsync();
-        }
-
-        public async Task<SystemAccount?> GetById(int id)
-        {
-            return await _context.SystemAccounts.FirstOrDefaultAsync(s => s.AccountID == id);
-        }
-
         public async Task<SystemAccount> SaveAccount(SystemAccount account)
         {
             _context.SystemAccounts.Add(account);
@@ -46,21 +24,52 @@ namespace DataAccessLayer.Repositories
             return account;
         }
 
+        public async Task<SystemAccount?> GetById(int id)
+        {
+            return await _context.SystemAccounts.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<SystemAccount>> GetAll()
+        {
+            return await _context.SystemAccounts.ToListAsync();
+        }
+
         public async Task<bool> Update(int id, SystemAccount account)
         {
-            var accountExisting = await _context.SystemAccounts.FirstOrDefaultAsync(a => a.AccountID == id);
-            if (accountExisting == null)
+            var existingAccount = await _context.SystemAccounts.FindAsync(id);
+            if (existingAccount == null)
             {
                 return false;
             }
-            _context.Entry(accountExisting).CurrentValues.SetValues(account);
+
+            existingAccount.AccountName = account.AccountName;
+            existingAccount.AccountEmail = account.AccountEmail;
+            existingAccount.AccountRole = account.AccountRole;
+            existingAccount.AccountPassword = account.AccountPassword;
+            existingAccount.AccountStatus = account.AccountStatus;
+
+            _context.SystemAccounts.Update(existingAccount);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateStatus(int id)
+        {
+            var existingAccount = await _context.SystemAccounts.FindAsync(id);
+            if (existingAccount == null)
+            {
+                return false;
+            }
+
+            existingAccount.AccountStatus = "IN_ACTIVE";
+            _context.Entry(existingAccount).Property(x => x.AccountStatus).IsModified = true;
             await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> CheckEmail(string email)
         {
-            return await _context.SystemAccounts.AnyAsync(s => s.AccountEmail == email);
+            return await _context.SystemAccounts.AnyAsync(a => a.AccountEmail == email);
         }
     }
 }

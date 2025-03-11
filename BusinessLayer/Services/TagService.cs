@@ -13,78 +13,38 @@ namespace BusinessLayer.Services
 {
     public class TagService : ITagService
     {
-        private readonly ITagRepository _tagRepository;
+        private readonly ITagRepository _repository;
         private readonly IMapper _mapper;
 
-        public TagService(ITagRepository tagRepository, IMapper mapper)
+        public TagService(ITagRepository repository, IMapper mapper)
         {
-            _tagRepository = tagRepository;
+            _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<TagResponse> CreateAsync(TagRequest tagRequest)
+        public async Task<TagResponse> SaveTag(string tagName)
         {
-            try
-            {
-                var tag = _mapper.Map<Tag>(tagRequest);
-                var createdTag = await _tagRepository.CreateAsync(tag);
-                return _mapper.Map<TagResponse>(createdTag);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Không thể tạo tag", ex);
-            }
+            var tag = new Tag { TagName = tagName };
+            var savedTag = await _repository.SaveTag(tag);
+            return _mapper.Map<TagResponse>(savedTag);
         }
 
-        public async Task<List<TagResponse>> GetAllAsync()
+        public async Task<TagResponse?> GetById(int id)
         {
-            try
-            {
-                var tags = await _tagRepository.GetAllAsync();
-                return _mapper.Map<List<TagResponse>>(tags);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Không thể lấy danh sách tag", ex);
-            }
+            var tag = await _repository.GetById(id);
+            return tag == null ? null : _mapper.Map<TagResponse>(tag);
         }
 
-        public async Task<TagResponse?> GetByIdAsync(int id)
+        public async Task<TagResponse?> GetByName(string name)
         {
-            try
-            {
-                var tag = await _tagRepository.GetByIdAsync(id);
-                return _mapper.Map<TagResponse>(tag);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Không thể lấy tag với ID {id}", ex);
-            }
+            var tag = await _repository.GetByName(name);
+            return tag == null ? null : _mapper.Map<TagResponse>(tag);
         }
 
-        public async Task<TagResponse> UpdateAsync(int id, TagRequest tagRequest)
+        public async Task<IEnumerable<TagResponse>> GetAll()
         {
-            try
-            {
-                var existingTag = await _tagRepository.GetByIdAsync(id);
-                if (existingTag == null)
-                {
-                    return null; // Trả về null nếu không tìm thấy
-                }
-
-                _mapper.Map(tagRequest, existingTag);
-                var updatedTag = await _tagRepository.UpdateAsync(id, existingTag);
-                return _mapper.Map<TagResponse>(updatedTag);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Không thể cập nhật tag với ID {id}", ex);
-            }
-        }
-        public async Task<List<TagResponse>> GetTagsByArticleIdAsync(int articleId)
-        {
-            var tags = await _tagRepository.GetByArticleIdAsync(articleId);
-            return _mapper.Map<List<TagResponse>>(tags);
+            var tags = await _repository.GetAll();
+            return _mapper.Map<IEnumerable<TagResponse>>(tags);
         }
     }
 }

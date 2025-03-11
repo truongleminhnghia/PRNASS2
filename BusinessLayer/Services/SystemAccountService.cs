@@ -14,88 +14,70 @@ namespace BusinessLayer.Services
 {
     public class SystemAccountService : ISystemAccountService
     {
-        private readonly ISystemAccountRepository _systemAccountRepository;
+        private readonly ISystemAccountRepository _repository;
         private readonly IMapper _mapper;
 
-        public SystemAccountService(ISystemAccountRepository systemAccountRepository, IMapper mapper)
+        public SystemAccountService(ISystemAccountRepository repository, IMapper mapper)
         {
-            _systemAccountRepository = systemAccountRepository;
+            _repository = repository;
             _mapper = mapper;
         }
-        public async Task<SystemAccountResponse> CreateAccount(SystemAccountRequest request)
+
+        public async Task<SystemAccountResponse> SaveAccount(SystemAccountRequest accountRequest)
         {
-            bool isExisting = await _systemAccountRepository.CheckEmail(request.AccountEmail);
-            if (isExisting) // Nếu email đã tồn tại
-            {
-                throw new Exception("Email already exists");
-            }
-            var account = await _systemAccountRepository.SaveAccount(_mapper.Map<SystemAccount>(request));
-            if (account != null)
-            {
-                return _mapper.Map<SystemAccountResponse>(account);
-            }
-            throw new Exception("Failed to create account");
+            var account = _mapper.Map<SystemAccount>(accountRequest);
+            var savedAccount = await _repository.SaveAccount(account);
+            return _mapper.Map<SystemAccountResponse>(savedAccount);
         }
 
-        public async Task<bool> DeleteAccount(int id)
+        public async Task<SystemAccountResponse?> GetById(int id)
         {
-            var result = await _systemAccountRepository.UpdateStatus(id);
-            if (result)
-            {
-                return true;
-            }
-            return false;
+            var account = await _repository.GetById(id);
+            return account == null ? null : _mapper.Map<SystemAccountResponse>(account);
         }
 
         public async Task<IEnumerable<SystemAccountResponse>> GetAll()
         {
-            var accounts = await _systemAccountRepository.GetAll();
-            if (accounts == null)
-            {
-                throw new Exception("List empty!");
-            }
+            var accounts = await _repository.GetAll();
             return _mapper.Map<IEnumerable<SystemAccountResponse>>(accounts);
         }
 
-        public async Task<SystemAccountResponse> GetById(int id)
+        public async Task<IEnumerable<SystemAccountResponse>> GetFilteredAccounts(string status, string searchTerm, string role)
         {
-            var result = await _systemAccountRepository.GetById(id);
-            if (result != null)
+            var accounts = await _repository.GetAll();
+
+            if (!string.IsNullOrEmpty(status))
             {
-                return _mapper.Map<SystemAccountResponse>(result);
+                accounts = accounts.Where(a => a.AccountStatus == status);
             }
-            throw new Exception("Account do not exist");
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                accounts = accounts.Where(a => a.AccountName.Contains(searchTerm) || a.AccountEmail.Contains(searchTerm));
+            }
+
+            if (!string.IsNullOrEmpty(role))
+            {
+                accounts = accounts.Where(a => a.AccountRole == role);
+            }
+
+            return _mapper.Map<IEnumerable<SystemAccountResponse>>(accounts.OrderBy(a => a.AccountName));
         }
 
-        public async Task<bool> Update(int id, SystemAccountRequest request)
+        public async Task<bool> Update(int id, SystemAccountRequest accountRequest)
         {
-            var account = await _systemAccountRepository.GetById(id);
-            if (account == null)
-            {
-                return false; // Hoặc throw new Exception("Account not found");
-            }
-            if (request.AccountName != null)
-            {
-                account.AccountName = request.AccountName;
+            var account = _mapper.Map<SystemAccount>(accountRequest);
+            return await _repository.Update(id, account);
+        }
 
-            }
-            if (request.AccountEmail != null)
-            {
-                account.AccountEmail = request.AccountEmail;
+        public async Task<bool> UpdateStatus(int id)
+        {
+            return await _repository.UpdateStatus(id);
+        }
 
-            }
-            if (request.AccountStatus != null)
-            {
-                account.AccountStatus = request.AccountStatus;
-
-            }
-            if (request.AccountRole != null)
-            {
-                account.AccountRole = request.AccountRole;
-
-            }
-            await _systemAccountRepository.Update(id, account);
-            return true;
+        public async Task<bool> CheckEmail(string email)
+        {
+            return await _repository.CheckEmail(email);
         }
     }
 }
