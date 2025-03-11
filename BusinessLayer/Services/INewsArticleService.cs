@@ -16,5 +16,7 @@ namespace BusinessLayer.Services
         Task<IEnumerable<NewsArticleResponse>> GetAll();
         Task<bool> Update(int id, NewsArticleRequest newsArticleRequest);
         Task<bool> Delete(int id);
+        Task<DashboardStatistics> GetDashboardStatistics(string reportType, DateTime startDate, DateTime endDate);
+        Task<List<NewsArticleResponse>> GetRecentArticles(int count);
     }
 }

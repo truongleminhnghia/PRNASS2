@@ -1,0 +1,11 @@
+@page "{id:int}"
+@model NewsArticleDetailModel
+@{
+    ViewData["Title"] = "News Article Detail";
+}
+
+<div class="mt-4">
+    <h2>@Model.Article.NewsTitle</h2>
+    <p><strong>Published on:</strong> @Model.Article.CreatedDate.ToString("yyyy-MM-dd")</p>
+    <p>@Model.Article.NewsContent</p>
+</div>

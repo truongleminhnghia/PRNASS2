@@ -1,0 +1,45 @@
+/* Custom styles for the application */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-subtitle {
+    font-size: 0.875rem;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+.card-footer {
+    background-color: transparent;
+    border-top: none;
+}
+
+.footer {
+    padding: 1rem 0;
+    background-color: #f8f9fa;
+}
